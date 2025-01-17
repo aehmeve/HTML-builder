@@ -9,7 +9,7 @@ fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
     console.log('\nSecret folder cointains next files:');
     files.forEach((file) => {
       if (file.isFile()) {
-        const filePath = path.join(file.path, file.name);
+        const filePath = path.join(file.parentPath, file.name);
         fs.promises
           .stat(filePath, (err) => {
             if (err) {
