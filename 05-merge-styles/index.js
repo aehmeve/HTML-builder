@@ -6,8 +6,10 @@ const pathToStyles = path.join(__dirname, 'styles');
 function createProperFilesArr(initArr) {
   const newArr = [];
   initArr.forEach((fileDirent) => {
-    if (fileDirent.isFile() &&
-    fileDirent.name.slice(fileDirent.name.indexOf('.')) === '.css') {
+    if (
+      fileDirent.isFile() &&
+      fileDirent.name.slice(fileDirent.name.indexOf('.')) === '.css'
+    ) {
       newArr.push(fileDirent.name);
     }
   });
@@ -24,8 +26,8 @@ function copyFilesContent(arr) {
   });
 }
 
-const folderContent = new Promise(function (resolve, reject) {
-  fs.readdir(pathToStyles,{ withFileTypes: true }, (err, files) => {
+new Promise(function (resolve, reject) {
+  fs.readdir(pathToStyles, { withFileTypes: true }, (err, files) => {
     if (err) {
       reject(console.log(`Couldn't read content of folder:\n${err}`));
     } else {
@@ -34,4 +36,4 @@ const folderContent = new Promise(function (resolve, reject) {
   });
 })
   .then(createProperFilesArr)
-  .then(copyFilesContent)
+  .then(copyFilesContent);

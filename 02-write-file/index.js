@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { stdin, stdout } = require('node:process');
+const { stdin } = require('node:process');
 
 const outputPath = path.join(__dirname, 'output.txt');
 const outputFile = fs.createWriteStream(outputPath);
