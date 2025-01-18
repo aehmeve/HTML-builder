@@ -1,28 +1,34 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const fsPromises = require('node:fs/promises');
+const path = require('node:path');
 
-fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true }, (err) => {
-  if (err) {
-    console.log(`Oops: ${err} happened!`);
-  }
-});
+const origFolder = path.join(__dirname, 'files');
+const newFolder = path.join(__dirname, 'files-copy');
 
-fs.promises
-  .readdir(path.join(__dirname, 'files'), (err) => {
-    if (err) {
-      console.log(`Oops: ${err}`);
-    }
-  })
-  .then((files) => {
-    files.forEach((file) => {
+async function copyOrigFolder() {
+  async function copyFolder() {
+    await fsPromises.mkdir(newFolder);
+    const filesToCopy = await fsPromises.readdir(origFolder, (err) => {
+      if (err) console.log(`Oops: ${err}`);
+    });
+    filesToCopy.forEach((file) => {
       fs.copyFile(
-        path.join(__dirname, 'files', file),
-        path.join(__dirname, 'files-copy', file),
+        path.join(origFolder, file),
+        path.join(newFolder, file),
         (err) => {
-          if (err) {
-            console.log(`Oops! ${err}`);
-          }
+          if (err) console.log(`Copy error: ${err}`);
         },
       );
     });
-  });
+  }
+
+  try {
+    await fsPromises.access(newFolder);
+    await fsPromises.rm(newFolder, { force: true, recursive: true });
+    copyFolder();
+  } catch {
+    copyFolder();
+  }
+}
+
+copyOrigFolder();
