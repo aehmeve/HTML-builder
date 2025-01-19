@@ -5,7 +5,7 @@ const path = require('node:path');
 const origFolder = path.join(__dirname, 'files');
 const newFolder = path.join(__dirname, 'files-copy');
 
-async function copyOrigFolder() {
+async function copyDir() {
   async function copyFolder() {
     await fsPromises.mkdir(newFolder);
     const filesToCopy = await fsPromises.readdir(origFolder, (err) => {
@@ -31,4 +31,4 @@ async function copyOrigFolder() {
   }
 }
 
-copyOrigFolder();
+copyDir();
